@@ -72,7 +72,12 @@ class CommandManager {
     static registerCommand(cmd, func) {
         if (mCommandEmitter.listenerCount(cmd) == 0) {
             mCommandEmitter.on(cmd, (args) => {
-                func(args);
+                try {
+                    func(args);
+                } catch (err) {
+                    logger.error(tr("kobe.command.execute.error"));
+                    logger.error(err);
+                }
             });
             return true;
         } else {

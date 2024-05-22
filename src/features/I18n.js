@@ -17,7 +17,8 @@ const zh_CN = {
     "kobe.plugin.load.failed": "插件 {1} 加载失败",
     "kobe.plugin.nameMismatch": "无法加载插件 {1}，文件夹名称和 manifest.json 不一致！",
     "kobe.command.error.commandExists": "命令 {1} 已存在，无法重复注册！",
-    "kobe.plugins.info": "当前牢大加载了 {1} 个插件："
+    "kobe.plugins.info": "当前牢大加载了 {1} 个插件：",
+    "kobe.command.execute.error": "执行命令时发生错误："
 }
 
 const I18n = new JsonI18n("./lang/", "zh_CN");
