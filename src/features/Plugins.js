@@ -1,6 +1,5 @@
 const fs = require("fs");
 const { tr } = require("./I18n");
-const FilePath = require('path');
 const { logger, Kobe_Bot } = require("./Kobe");
 
 const requireOrReload = require("require-reload")(require);
@@ -43,17 +42,20 @@ class PluginManager {
     }
 
     static reloadPlugin(plugin) {
+        let pluginName = plugin.mName;
         try {
-            let pluginName = plugin.mName;
             if (fs.existsSync(`./plugins/${pluginName}/manifest.json`)) {
                 let manifestStr = fs.readFileSync(`./plugins/${pluginName}/manifest.json`, { encoding: 'utf-8' })
                 let manifest = JSON.parse(manifestStr);
                 if (manifest.load) {
-                    logger.info(tr("kobe.plugin.loading", [`${manifest.name}`]));
-                    plugin.mHandle = requireOrReload(`../../plugins/${pluginName}/${manifest.entry}`);
-                    mPluginInstanceCache.push(plugin);
-                    logger.info(tr("kobe.plugin.loaded", [`${manifest.name}`]));
-                    return true;
+                    if (manifest.name == pluginName) {
+                        logger.info(tr("kobe.plugin.loading", [`${manifest.name}`]));
+                        plugin.mHandle = requireOrReload(`../../plugins/${pluginName}/${manifest.entry}`);
+                        logger.info(tr("kobe.plugin.loaded", [`${manifest.name}`]));
+                        return true;
+                    } else {
+                        logger.error(tr("kobe.plugin.nameMismatch", [pluginName]));
+                    }
                 }
             }
         } catch (err) {
@@ -80,11 +82,14 @@ class PluginManager {
         mPluginInstanceCache = [];
         oldCache.forEach((plugin) => {
             let result = this.reloadPlugin(plugin);
-            if (result) pluginNames.push(plugin.mName);
+            if (result) {
+                pluginNames.push(plugin.mName);
+                mPluginInstanceCache.push(plugin);
+            }
         });
         let all_plugins = fs.readdirSync("./plugins/");
         all_plugins.forEach((pluginName) => {
-            if (!pluginName.includes(pluginName)) {
+            if (!pluginNames.includes(pluginName)) {
                 this.loadPlugin(pluginName);
             }
         });
