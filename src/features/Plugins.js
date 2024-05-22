@@ -13,7 +13,7 @@ class Plugin {
     constructor(name) {
         this.mName = name;
     }
-}
+};
 
 class PluginManager {
     static loadPlugin(dirName) {

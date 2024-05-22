@@ -1,8 +1,7 @@
 const { Kobe_Bot, logger } = require("./features/Kobe");
 const { tr } = require("./features/I18n");
 const { PluginManager } = require("./features/Plugins");
-const { postEvents } = require("./features/Event");
-const { initCommands } = require("./features/Command");
+const { CommandManager } = require("./features/Command");
 
 logger.info(tr("kobe.readingConfig"));
 
@@ -20,7 +19,7 @@ logger.info(String.raw`         --------------------   耐  摔  的  王   ----
 logger.info(String.raw`                                                                        `);
 
 Kobe_Bot.login();
-initCommands();
+CommandManager.init();
 
 // Delay Load
 setTimeout(() => {

@@ -44,7 +44,7 @@ class Kobe {
             logger.error(e);
         });
         this.mClient.on('close', (e) => {
-            logger.warn(tr("kobe.disconnect"));
+            logger.error(tr("kobe.disconnect"));
             setTimeout(() => {
                 this.login();
             }, boom());
@@ -182,8 +182,9 @@ class Kobe {
 const Kobe_Bot = new Kobe(config.get("target"), config.get("token"));
 
 const logger = new Logger("Kobe");
-if (config.get("log").enable) {
-    logger.setFile(config.get("log").path);
+logger.setLevel(config.get("logger").logLevel);
+if (config.get("logger").logFile) {
+    logger.setFile(config.get("logger").logFilePath);
 }
 
 module.exports = { Kobe, Kobe_Bot, logger };

@@ -8,14 +8,15 @@ const zh_CN = {
     "kobe.parseError": "无法解析信息！",
     "kobe.readingConfig": "正在读取配置文件...",
     "kobe.closing": "牢大正在坠机...",
-    "kobe.unknownCommand": "未知的命令，请检查命令是否存在",
+    "kobe.unknownCommand": "未知的命令：{1}。请检查命令是否存在，以及您对它是否拥有使用权限。",
     "kobe.reloaded": "牢大已重载",
     "kobe.debug.enable": "牢大已进入调试模式",
     "kobe.debug.disable": "牢大已离开调试模式",
     "kobe.plugin.loading": "正在加载插件 {1} ...",
     "kobe.plugin.loaded": "插件 {1} 加载完成",
     "kobe.plugin.load.failed": "插件 {1} 加载失败",
-    "kobe.plugin.nameMismatch": "无法加载插件 {1}，文件夹名称和 manifest.json 不一致！"
+    "kobe.plugin.nameMismatch": "无法加载插件 {1}，文件夹名称和 manifest.json 不一致！",
+    "kobe.command.error.commandExists": "命令 {1} 已存在，无法重复注册！"
 }
 
 const I18n = new JsonI18n("./lang/", "zh_CN");

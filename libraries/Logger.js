@@ -15,20 +15,10 @@ const FormatColor = {
 class Logger {
     mName = undefined;
     mFile = undefined;
+    mLevel = 4;
 
     constructor(name = undefined) {
         this.mName = name;
-    }
-
-    setFile(logPath) {
-        this.mFile = logPath;
-        let dirPath = FilePath.dirname(this.mFile);
-        if (!fs.existsSync(dirPath)) {
-            fs.mkdirSync(dirPath);
-        }
-        if (!fs.existsSync(this.mFile)) {
-            fs.writeFileSync(this.mFile, "");
-        }
     }
 
     getTimeStr() {
@@ -50,29 +40,54 @@ class Logger {
         }
     }
 
+    setFile(logPath) {
+        this.mFile = logPath;
+        let dirPath = FilePath.dirname(this.mFile);
+        if (!fs.existsSync(dirPath)) {
+            fs.mkdirSync(dirPath);
+        }
+        if (!fs.existsSync(this.mFile)) {
+            fs.writeFileSync(this.mFile, "");
+        }
+    }
+
+    setLevel(level) {
+        this.mLevel = level;
+    }
+
     debug(output) {
-        this.writeLogLine(`[${this.getTimeStr()}] DEBUG ${this.getName()} ${output}`);
-        console.log(`[${this.getTimeStr()}] ${FormatColor.debug}DEBUG ${this.getName()} ${output}${FormatColor.reset}`);
+        if (this.mLevel >= 5) {
+            this.writeLogLine(`[${this.getTimeStr()}] DEBUG ${this.getName()} ${output}`);
+            console.log(`[${this.getTimeStr()}] ${FormatColor.debug}DEBUG ${this.getName()} ${output}${FormatColor.reset}`);
+        }
     }
 
     info(output) {
-        this.writeLogLine(`[${this.getTimeStr()}] INFO ${this.getName()} ${output}`);
-        console.log(`[${this.getTimeStr()}] ${FormatColor.output}INFO${FormatColor.reset} ${this.getName()} ${output}`);
+        if (this.mLevel >= 4) {
+            this.writeLogLine(`[${this.getTimeStr()}] INFO ${this.getName()} ${output}`);
+            console.log(`[${this.getTimeStr()}] ${FormatColor.output}INFO${FormatColor.reset} ${this.getName()} ${output}`);
+        }
     }
 
     warn(output) {
-        this.writeLogLine(`[${this.getTimeStr()}] WARN ${this.getName()} ${output}`);
-        console.log(`[${this.getTimeStr()}] ${FormatColor.warn}WARN ${this.getName()} ${output}${FormatColor.reset}`);
+        if (this.mLevel >= 3) {
+            this.writeLogLine(`[${this.getTimeStr()}] WARN ${this.getName()} ${output}`);
+            console.log(`[${this.getTimeStr()}] ${FormatColor.warn}WARN ${this.getName()} ${output}${FormatColor.reset}`);
+        }
     }
 
     error(output) {
-        this.writeLogLine(`[${this.getTimeStr()}] ERROR ${this.getName()} ${output}`);
-        console.log(`[${this.getTimeStr()}] ${FormatColor.error}ERROR ${this.getName()} ${output}${FormatColor.reset}`);
+        if (this.mLevel >= 2) {
+            this.writeLogLine(`[${this.getTimeStr()}] ERROR ${this.getName()} ${output}`);
+            console.log(`[${this.getTimeStr()}] ${FormatColor.error}ERROR ${this.getName()} ${output}${FormatColor.reset}`);
+        }
     }
 
     fatal(output) {
-        this.writeLogLine(`[${this.getTimeStr()}] FATAL ${this.getName()} ${output}`);
-        console.log(`[${this.getTimeStr()}] ${FormatColor.fatal}FATAL ${this.getName()} ${output}${FormatColor.reset}`);
+        if (this.mLevel >= 1) {
+            this.writeLogLine(`[${this.getTimeStr()}] FATAL ${this.getName()} ${output}`);
+            console.log(`[${this.getTimeStr()}] ${FormatColor.fatal}FATAL ${this.getName()} ${output}${FormatColor.reset}`);
+        }
     }
 }
 
