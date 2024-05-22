@@ -9,6 +9,7 @@ let mPluginInstanceCache = [];
 class Plugin {
     mName;
     mHandle;
+    mManifest;
 
     constructor(name) {
         this.mName = name;
@@ -25,6 +26,7 @@ class PluginManager {
                     if (manifest.name == dirName) {
                         logger.info(tr("kobe.plugin.loading", [`${manifest.name}`]));
                         let plugin = new Plugin(dirName);
+                        plugin.mManifest = manifest;
                         plugin.mHandle = requireOrReload(`../../plugins/${dirName}/${manifest.entry}`);
                         mPluginInstanceCache.push(plugin);
                         logger.info(tr("kobe.plugin.loaded", [`${manifest.name}`]));
@@ -50,6 +52,7 @@ class PluginManager {
                 if (manifest.load) {
                     if (manifest.name == pluginName) {
                         logger.info(tr("kobe.plugin.loading", [`${manifest.name}`]));
+                        plugin.mManifest = manifest;
                         plugin.mHandle = requireOrReload(`../../plugins/${pluginName}/${manifest.entry}`);
                         logger.info(tr("kobe.plugin.loaded", [`${manifest.name}`]));
                         return true;
@@ -93,6 +96,14 @@ class PluginManager {
                 this.loadPlugin(pluginName);
             }
         });
+    }
+
+    static getAllPluginNames() {
+        let result = [];
+        mPluginInstanceCache.forEach((plugin) => {
+            result.push(plugin.mName);
+        });
+        return result;
     }
 };
 

@@ -29,6 +29,11 @@ class CommandManager {
                         PluginManager.reloadAllPlugins();
                         return logger.info(tr("kobe.reloaded"));
                     }
+                    case "list": {
+                        let names = PluginManager.getAllPluginNames();
+                        logger.info(tr("kobe.plugins.info", [names.length]));
+                        return logger.info(names);
+                    }
                     default: {
                         let input = data.split(" ");
                         input = input.filter(str => str.trim() !== "");
