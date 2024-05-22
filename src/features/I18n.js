@@ -14,7 +14,8 @@ const zh_CN = {
     "kobe.debug.disable": "牢大已离开调试模式",
     "kobe.plugin.loading": "正在加载插件 {1} ...",
     "kobe.plugin.loaded": "插件 {1} 加载完成",
-    "kobe.plugin.load.failed": "插件 {1} 加载失败"
+    "kobe.plugin.load.failed": "插件 {1} 加载失败",
+    "kobe.plugin.nameMismatch": "无法加载插件 {1}， 文件夹名称和 manifest.json 不一致！"
 }
 
 const I18n = new JsonI18n("./lang/", "zh_CN");

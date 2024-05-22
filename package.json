@@ -16,6 +16,7 @@
     "dayjs": "1.11.11",
     "json5": "2.2.3",
     "node-schedule": "2.1.1",
+    "require-reload": "^0.2.2",
     "winston": "3.13.0",
     "ws": "8.17.0"
   },
