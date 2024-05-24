@@ -1,21 +1,21 @@
 const fs = require("fs");
 
 function uuid() {
-    var s = []
-    var hexDigits = '0123456789abcdef'
-    for (var i = 0; i < 36; i++) {
-        s[i] = hexDigits.substring(Math.floor(Math.random() * 0x10), 1)
+    let s = [];
+    let hexDigits = '0123456789abcdef';
+    for (let i = 0; i < 36; i++) {
+        s[i] = hexDigits.substring(Math.floor(Math.random() * 0x10), 1);
     }
-    s[14] = '4' // bits 12-15 of the time_hi_and_version field to 0010
-    s[19] = hexDigits.substring((s[19] & 0x3) | 0x8, 1) // bits 6-7 of the clock_seq_hi_and_reserved to 01
-    s[8] = s[13] = s[18] = s[23] = '-'
+    s[14] = '4' ;
+    s[19] = hexDigits.substring((s[19] & 0x3) | 0x8, 1) ;
+    s[8] = s[13] = s[18] = s[23] = '-';
 
-    var uuid = s.join('')
-    return uuid
+    let uuid = s.join('');
+    return uuid;
 }
 
 class ForwardMsgBuilder {
-    msg = []
+    msg = [];
 
     addMsgById(id) {
         this.msg.push({
@@ -73,7 +73,7 @@ class MessageBuilder {
             msg = [msg];
         }
         for (let index in msg) {
-            var imsg = msg[index];
+            let imsg = msg[index];
             if (typeof imsg == 'string') {
                 msg[index] = MessageBuilder.text(imsg);
             }
@@ -86,10 +86,10 @@ class MessageBuilder {
 }
 
 class PacketBuilder {
-    static MessagePacket(id, type, msg) {
+    static MessagePacket(id, type, msg, echo = uuid()) {
         let sendjson = {
             action: 'send_msg',
-            echo: uuid(),
+            echo: echo,
             params: {
                 user_id: id,
                 message: msg,
@@ -127,7 +127,6 @@ class PacketBuilder {
             params: {
                 user_id: fid,
                 times: 10
-
             }
         }
     }
@@ -141,10 +140,10 @@ class PacketBuilder {
         }
     }
 
-    static GetMsgPacket(mid) {
+    static GetMsgPacket(mid, echo = uuid()) {
         return {
             action: 'get_msg',
-            echo: uuid(),
+            echo: echo,
             params: {
                 message_id: mid
             }
@@ -162,10 +161,10 @@ class PacketBuilder {
         }
     }
 
-    static GroupRequestPacket(flag, sub_type, approve) {
+    static GroupRequestPacket(flag, sub_type, approve, echo = uuid()) {
         return {
             action: 'set_group_add_request',
-            echo: uuid(),
+            echo: echo,
             params: {
                 flag,
                 sub_type,
@@ -174,10 +173,10 @@ class PacketBuilder {
         }
     }
 
-    static FriendRequestPacket(flag, approve) {
+    static FriendRequestPacket(flag, approve, echo = uuid()) {
         return {
             action: 'set_friend_add_request',
-            echo: uuid(),
+            echo: echo,
             params: {
                 flag,
                 approve
@@ -185,20 +184,20 @@ class PacketBuilder {
         }
     }
 
-    static GroupMemberListPacket(gid) {
+    static GroupMemberListPacket(gid, echo = uuid()) {
         return {
             action: 'get_group_member_list',
-            echo: uuid(),
+            echo: echo,
             params: {
                 group_id: gid
             }
         }
     }
 
-    static GroupMemberInfoPacket(gid, mid) {
+    static GroupMemberInfoPacket(gid, mid, echo = uuid()) {
         return {
             action: 'get_group_member_info',
-            echo: uuid(),
+            echo: echo,
             params: {
                 group_id: gid,
                 user_id: mid
@@ -206,10 +205,10 @@ class PacketBuilder {
         }
     }
 
-    static GroupForwardMessagePacket(gid, msg) {
+    static GroupForwardMessagePacket(gid, msg, echo = uuid()) {
         return {
             action: 'send_group_forward_msg',
-            echo: uuid(),
+            echo: echo,
             params: {
                 group_id: gid,
                 messages: msg
